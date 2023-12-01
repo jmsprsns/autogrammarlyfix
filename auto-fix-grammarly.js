@@ -10,11 +10,15 @@ function refreshData() {
         var newclass;
         if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
             newclass = document.querySelector('.cards-replacements_labels-itemRemove');
-            newclass.click();
         } else {
             newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
             newclass = newclass[0];
+        }
+        
+        if (newclass) {
             newclass.click();
+        } else {
+            console.log("newclass is undefined");
         }
 
         var currentValue = document.querySelector('.counterText').textContent;
