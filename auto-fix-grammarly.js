@@ -20,5 +20,8 @@ function refreshData() {
     }
     refreshTimer = setTimeout(refreshData, x * 1000);
 }
+function stopRefreshData() {
+    clearTimeout(refreshTimer);
+}
 
 refreshData();
