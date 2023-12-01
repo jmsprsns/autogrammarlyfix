@@ -4,20 +4,25 @@ var unchangedCount = 0;
 var observer;
 
 function refreshData() {
+    console.log("Running refreshData function");
     x = 1; 
     try {
+        var newclass;
         if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
-            var newclass = document.querySelector('.cards-replacements_labels-itemRemove');
+            newclass = document.querySelector('.cards-replacements_labels-itemRemove');
             newclass.click();
         } else {
-            var newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
+            newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
             newclass = newclass[0];
             newclass.click();
         }
 
         var currentValue = document.querySelector('.counterText').textContent;
+        console.log("Current Value: ", currentValue);
+
         if (currentValue === lastValue) {
             unchangedCount++;
+            console.log("Unchanged Count: ", unchangedCount);
             if (unchangedCount >= 5) {
                 console.log("Value unchanged for 5 refreshes, stopping script.");
                 clearTimeout(refreshTimer);
@@ -29,6 +34,7 @@ function refreshData() {
         }
 
     } catch (error) {
+        console.log("Error in refreshData: ", error);
         if (document.getElementsByClassName("wrapper_fipkee2") !== null) {
             var cli = document.getElementsByClassName("wrapper_fipkee2");
             var vli = cli[0];
@@ -40,9 +46,13 @@ function refreshData() {
 }
 
 function checkForChanges() {
+    console.log("Running checkForChanges function");
     var currentValue = document.querySelector('.counterText').textContent;
+    console.log("Current Value: ", currentValue);
+
     if (currentValue === lastValue) {
         unchangedCount++;
+        console.log("Unchanged Count: ", unchangedCount);
         if (unchangedCount >= 5) {
             console.log("Value unchanged for 5 refreshes, stopping script.");
             clearTimeout(refreshTimer);
@@ -56,6 +66,7 @@ function checkForChanges() {
 }
 
 function startObserving() {
+    console.log("Starting to observe");
     var targetNode = document.querySelector('.counterText');
     if (!targetNode) {
         console.log("Target node not found");
@@ -65,6 +76,7 @@ function startObserving() {
     var config = { characterData: true, childList: true, subtree: true };
 
     observer = new MutationObserver(function(mutations) {
+        console.log("Mutation observed");
         mutations.forEach(function(mutation) {
             checkForChanges();
         });
@@ -74,5 +86,6 @@ function startObserving() {
 }
 
 // Start the process
+console.log("Starting the process");
 refreshData();
 startObserving();
