@@ -1,7 +1,9 @@
 var refreshTimer;
+var lastValue = null;
+var unchangedCount = 0;
 
 function refreshData() {
-    x = 1;
+    x = 1; 
     try {
         if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
             var newclass = document.querySelector('.cards-replacements_labels-itemRemove');
@@ -11,6 +13,20 @@ function refreshData() {
             newclass = newclass[0];
             newclass.click();
         }
+
+        var currentValue = document.querySelector('.counterText.fn2nd1o.counterContent_f378kc4').textContent;
+        if (currentValue === lastValue) {
+            unchangedCount++;
+            if (unchangedCount >= 5) {
+                console.log("Value unchanged for 5 refreshes, stopping script.");
+                clearTimeout(refreshTimer);
+                return; 
+            }
+        } else {
+            unchangedCount = 0; 
+            lastValue = currentValue; 
+        }
+
     } catch (error) {
         if (document.getElementsByClassName("wrapper_fipkee2") !== null) {
             var cli = document.getElementsByClassName("wrapper_fipkee2");
@@ -18,10 +34,8 @@ function refreshData() {
             vli.click();
         }
     }
+
     refreshTimer = setTimeout(refreshData, x * 1000);
-}
-function stopRefreshData() {
-    clearTimeout(refreshTimer);
 }
 
 refreshData();
