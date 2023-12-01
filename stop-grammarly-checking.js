@@ -1,3 +1,0 @@
-function stopRefreshData() {
-    clearTimeout(refreshTimer);
-}
