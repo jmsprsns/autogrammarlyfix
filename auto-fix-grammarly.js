@@ -14,7 +14,7 @@ function refreshData() {
             newclass.click();
         }
 
-        var currentValue = document.querySelector('.counterText.fn2nd1o.counterContent_f378kc4').textContent;
+        var currentValue = document.querySelector('.counterText').textContent;
         if (currentValue === lastValue) {
             unchangedCount++;
             if (unchangedCount >= 5) {
