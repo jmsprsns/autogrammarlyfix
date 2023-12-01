@@ -4,49 +4,56 @@ var unchangedCount = 0;
 var observer;
 
 function refreshData() {
-    console.log("Running refreshData function");
-    x = 1; 
-    try {
-        var newclass;
-        if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
-            newclass = document.querySelector('.cards-replacements_labels-itemRemove');
-        } else {
-            newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
-            newclass = newclass[0];
-        }
-        
-        if (newclass) {
-            newclass.click();
-        } else {
-            console.log("newclass is undefined");
-        }
+	console.log("Running refreshData function");
+	x = 1; 
+	try {
+		var newclass;
+		if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
+			newclass = document.querySelector('.cards-replacements_labels-itemRemove');
+		} else {
+			newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
+			newclass = newclass[0];
+		}
 
-        var currentValue = document.querySelector('.counterText').textContent;
-        console.log("Current Value: ", currentValue);
+		if (newclass) {
+			newclass.click();
+		} else {
+			console.log("newclass is undefined");
+		}
 
-        if (currentValue === lastValue) {
-            unchangedCount++;
-            console.log("Unchanged Count: ", unchangedCount);
-            if (unchangedCount >= 5) {
-                console.log("Value unchanged for 5 refreshes, stopping script.");
-                clearTimeout(refreshTimer);
-                return; 
-            }
-        } else {
-            unchangedCount = 0; 
-            lastValue = currentValue; 
-        }
+		var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
+		if (updateAllButton) {
+			updateAllButton.click();
+		} else {
+			console.log("updateAllButton is undefined");
+		}
 
-    } catch (error) {
-        console.log("Error in refreshData: ", error);
-        if (document.getElementsByClassName("wrapper_fipkee2") !== null) {
-            var cli = document.getElementsByClassName("wrapper_fipkee2");
-            var vli = cli[0];
-            vli.click();
-        }
-    }
+		var currentValue = document.querySelector('.counterText').textContent;
+		console.log("Current Value: ", currentValue);
 
-    refreshTimer = setTimeout(refreshData, x * 1000);
+		if (currentValue === lastValue) {
+			unchangedCount++;
+			console.log("Unchanged Count: ", unchangedCount);
+			if (unchangedCount >= 5) {
+                alert("No new errors to fix after 5 attempts, stopping script.");
+				clearTimeout(refreshTimer);
+				return; 
+			}
+		} else {
+			unchangedCount = 0; 
+			lastValue = currentValue; 
+		}
+
+	} catch (error) {
+		console.log("Error in refreshData: ", error);
+		if (document.getElementsByClassName("wrapper_fipkee2") !== null) {
+			var cli = document.getElementsByClassName("wrapper_fipkee2");
+			var vli = cli[0];
+			vli.click();
+		}
+	}
+
+	refreshTimer = setTimeout(refreshData, x * 1000);
 }
 
 function checkForChanges() {
@@ -58,7 +65,7 @@ function checkForChanges() {
         unchangedCount++;
         console.log("Unchanged Count: ", unchangedCount);
         if (unchangedCount >= 5) {
-            console.log("Value unchanged for 5 refreshes, stopping script.");
+            alert("No new errors to fix after 5 attempts, stopping script.");
             clearTimeout(refreshTimer);
             observer.disconnect();
             return;
