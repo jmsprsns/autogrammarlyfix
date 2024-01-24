@@ -17,9 +17,11 @@ function refreshData() {
                 console.log("GrammarlyAutofix: Grammar mistake fixed!");
                 itemRemove.click();
                 actionable = true; // There is an action, so set flag to true
+                unchangedCount = 0; // Reset the count that checks if its finished
             } else {
                 console.log("GrammarlyAutofix: Dismissed item without any solution.");
                 dismissButton.click();
+                actionable = false;
             }
     
             if (updateAllButton) {
