@@ -12,11 +12,11 @@ function refreshData() {
         var actionable = false; // Flag to check if there are actions to perform
 
         if (itemRemove) {
-            console.log("Clicking itemRemove");
+            console.log("Grammar mistake fixed!");
             itemRemove.click();
             actionable = true; // There is an action, so set flag to true
         } else {
-            console.log("Dismiss button found, clicking");
+            console.log("Dismissed item without any solution.");
             dismissButton.click();
             actionable = true;
         }
