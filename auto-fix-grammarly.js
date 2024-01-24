@@ -6,19 +6,24 @@ var observer;
 function checkElements() {
     console.log("Checking for elements");
     var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
-    var dismissButton = document.querySelector('button[data-name="card/ignore"]');
-    var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
 
     if (itemRemove) {
         console.log("Clicking itemRemove");
         itemRemove.click();
-    } else if (dismissButton) {
-        console.log("Dismiss button found, clicking");
-        dismissButton.click();
     } else {
-        console.log("itemRemove and Dismiss button not found");
+        console.log("itemRemove not found, waiting for Dismiss button");
+        setTimeout(function() {
+            var dismissButton = document.querySelector('button[data-name="card/ignore"]');
+            if (dismissButton) {
+                console.log("Dismiss button found, clicking");
+                dismissButton.click();
+            } else {
+                console.log("Dismiss button still not found");
+            }
+        }, 500); // Delay in milliseconds, adjust as needed
     }
 
+    var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
     if (updateAllButton) {
         console.log("Clicking updateAllButton");
         updateAllButton.click();
