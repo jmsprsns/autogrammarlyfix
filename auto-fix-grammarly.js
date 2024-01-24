@@ -6,7 +6,11 @@ var observer;
 function refreshData() {
     console.log("Running refreshData function");
     try {
-        var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove, .cards-replacements_labels-deleteAll');
+        var itemRemove = document.querySelector(
+            '.cards-replacements_labels-itemRemove, ' + // Correctness
+            '.cards-replacements_labels-deleteAll, ' + // Clarity
+            '.cards-replacements_labels-itemInsert' // Engagement / Delivery
+        );
         var dismissButton = document.querySelector('button[data-name="card/ignore"], button[data-name="card/bulk-accept-apply"]');
         var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
         var actionable = false; // Flag to check if there are actions to perform
