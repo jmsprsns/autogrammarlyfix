@@ -4,7 +4,7 @@ var unchangedCount = 0;
 var observer;
 
 function refreshData() {
-    console.log("GrammarlyAutofix: Running refreshData function");
+    console.log("Running refreshData function");
     try {
         var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove, .cards-replacements_labels-deleteAll');
         var dismissButton = document.querySelector('button[data-name="card/ignore"], button[data-name="card/bulk-accept-apply"]');
