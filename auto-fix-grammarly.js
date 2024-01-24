@@ -45,7 +45,7 @@ function refreshData() {
         console.log("Error in refreshData: ", error);
     }
 
-    refreshTimer = setTimeout(refreshData, 250);
+    refreshTimer = setTimeout(refreshData, 500);
 }
 
 
