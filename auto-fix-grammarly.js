@@ -5,64 +5,49 @@ var observer;
 
 function refreshData() {
     console.log("Running refreshData function");
-    x = 1; 
     try {
         var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
         var dismissButton = document.querySelector('button[data-name="card/ignore"]');
         var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
+        var actionable = false; // Flag to check if there are actions to perform
 
         if (itemRemove) {
             console.log("Clicking itemRemove");
             itemRemove.click();
+            actionable = true; // There is an action, so set flag to true
         } else if (dismissButton) {
             console.log("Dismiss button found, clicking");
             dismissButton.click();
-        } else {
-            console.log("itemRemove and Dismiss button not found, checking for itemInsert");
-            var itemInsert = document.querySelector(".cards-replacements_labels-itemInsert");
-            if (itemInsert) {
-                console.log("Clicking itemInsert");
-                itemInsert.click();
-            } else {
-                console.log("itemInsert is undefined");
-            }
+            actionable = true;
         }
 
         if (updateAllButton) {
             console.log("Clicking updateAllButton");
             updateAllButton.click();
-        } else {
-            console.log("updateAllButton is undefined");
+            actionable = true;
         }
 
-        var currentValue = document.querySelector('.counterText').textContent;
-        console.log("Current Value: ", currentValue);
-    
-        if (currentValue === lastValue) {
+        if (!actionable) {
             unchangedCount++;
             console.log("Unchanged Count: ", unchangedCount);
             if (unchangedCount >= 5) {
-                clearTimeout(refreshTimer); // Clear the timer first
+                clearTimeout(refreshTimer);
                 if (observer) {
-                    observer.disconnect(); // Disconnect observer if it's being used
+                    observer.disconnect();
                 }
-                alert("No new errors to fix after 5 seconds, stopping script.");
-                return; // Stop the function here
+                alert("No new errors to fix after 5 checks, stopping script.");
+                return;
             }
         } else {
-            unchangedCount = 0; 
-            lastValue = currentValue; 
+            unchangedCount = 0;
         }
-        
-        refreshTimer = setTimeout(refreshData, 5000); 
-
     } catch (error) {
         console.log("Error in refreshData: ", error);
-        // Additional error handling as required
     }
 
-    refreshTimer = setTimeout(refreshData, x * 1000);
+    refreshTimer = setTimeout(refreshData, 5000);
 }
+
 
 function checkForChanges() {
     console.log("Running checkForChanges function");
