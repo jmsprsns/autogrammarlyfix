@@ -37,20 +37,21 @@ function refreshData() {
 
         var currentValue = document.querySelector('.counterText').textContent;
         console.log("Current Value: ", currentValue);
-
+    
         if (currentValue === lastValue) {
             unchangedCount++;
             console.log("Unchanged Count: ", unchangedCount);
             if (unchangedCount >= 5) {
-                alert("No new errors to fix after 5 attempts, stopping script.");
+                alert("No new errors to fix after 5 seconds, stopping script.");
                 clearTimeout(refreshTimer);
-                observer.disconnect(); // Disconnect observer when stopping
                 return; 
             }
         } else {
             unchangedCount = 0; 
             lastValue = currentValue; 
         }
+    
+        refreshTimer = setTimeout(refreshData, 5000);
 
     } catch (error) {
         console.log("Error in refreshData: ", error);
