@@ -11,36 +11,41 @@ function refreshData() {
         var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
         var actionable = false; // Flag to check if there are actions to perform
 
-        if (itemRemove) {
-            console.log("Grammar mistake fixed!");
-            itemRemove.click();
-            actionable = true; // There is an action, so set flag to true
-        } else {
-            console.log("Dismissed item without any solution.");
-            dismissButton.click();
-            actionable = true;
-        }
-
-        if (updateAllButton) {
-            console.log("Clicking updateAllButton");
-            updateAllButton.click();
-            actionable = true;
-        }
-
-        if (!actionable) {
-            unchangedCount++;
-            console.log("Unchanged Count: ", unchangedCount);
-            if (unchangedCount >= 10) {
-                clearTimeout(refreshTimer);
-                if (observer) {
-                    observer.disconnect();
-                }
-                alert("Success, zero errors! Stopping script.");
-                return;
+        setTimeout(function() {
+            
+            if (itemRemove) {
+                console.log("Grammar mistake fixed!");
+                itemRemove.click();
+                actionable = true; // There is an action, so set flag to true
+            } else {
+                console.log("Dismissed item without any solution.");
+                dismissButton.click();
+                actionable = true;
             }
-        } else {
-            unchangedCount = 0;
-        }
+    
+            if (updateAllButton) {
+                console.log("Clicking updateAllButton");
+                updateAllButton.click();
+                actionable = true;
+            }
+    
+            if (!actionable) {
+                unchangedCount++;
+                console.log("Unchanged Count: ", unchangedCount);
+                if (unchangedCount >= 10) {
+                    clearTimeout(refreshTimer);
+                    if (observer) {
+                        observer.disconnect();
+                    }
+                    alert("Success, zero errors! Stopping script.");
+                    return;
+                }
+            } else {
+                unchangedCount = 0;
+            }
+            
+        }, 250); // Timeout
+        
     } catch (error) {
         console.log("Error in refreshData: ", error);
     }
