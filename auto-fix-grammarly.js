@@ -6,7 +6,7 @@ var observer;
 function refreshData() {
     console.log("Running refreshData function");
     try {
-        var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
+        var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove, .cards-replacements_labels-deleteAll');
         var dismissButton = document.querySelector('button[data-name="card/ignore"]');
         var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
         var actionable = false; // Flag to check if there are actions to perform
