@@ -24,14 +24,14 @@ function refreshData() {
             }
     
             if (updateAllButton) {
-                console.log("GrammarlyAutofix: Clicking updateAllButton");
+                console.log("Clicking updateAllButton");
                 updateAllButton.click();
                 actionable = true;
             }
     
             if (!actionable) {
                 unchangedCount++;
-                console.log("GrammarlyAutofix: Unchanged Count: ", unchangedCount);
+                console.log("Unchanged Count: ", unchangedCount);
                 if (unchangedCount >= 10) {
                     clearTimeout(refreshTimer);
                     if (observer) {
@@ -47,7 +47,7 @@ function refreshData() {
         }, 250); // Timeout
         
     } catch (error) {
-        console.log("GrammarlyAutofix: Error in refreshData: ", error);
+        console.log("Error in refreshData: ", error);
     }
 
     refreshTimer = setTimeout(refreshData, 500);
@@ -55,23 +55,23 @@ function refreshData() {
 
 
 function checkForChanges() {
-    console.log("GrammarlyAutofix: Running checkForChanges function");
+    console.log("Running checkForChanges function");
     refreshData(); // Call refreshData to handle dynamic content
 }
 
 function startObserving() {
-    console.log("GrammarlyAutofix: Starting to observe");
+    console.log("Starting to observe");
     var targetNode = document.querySelector('.counterText'); // Adjust if a different parent element is more appropriate
 
     if (!targetNode) {
-        console.log("GrammarlyAutofix: Target node not found");
+        console.log("Target node not found");
         return;
     }
 
     var config = { childList: true, subtree: true };
 
     observer = new MutationObserver(function(mutations) {
-        console.log("GrammarlyAutofix: Mutation observed");
+        console.log("Mutation observed");
         checkForChanges();
     });
 
@@ -79,6 +79,6 @@ function startObserving() {
 }
 
 // Start the process
-console.log("GrammarlyAutofix: Starting the process");
+console.log("Starting the process");
 refreshData();
 startObserving();
