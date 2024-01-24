@@ -64,6 +64,7 @@ function refreshData() {
                         if (observer) {
                             observer.disconnect();
                         }
+                        active = false;
                         alert("Success, zero errors! Stopping script.");
                         console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
                         return;
