@@ -15,7 +15,7 @@ function refreshData() {
             console.log("Clicking itemRemove");
             itemRemove.click();
             actionable = true; // There is an action, so set flag to true
-        } else if (dismissButton) {
+        } else {
             console.log("Dismiss button found, clicking");
             dismissButton.click();
             actionable = true;
