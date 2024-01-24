@@ -23,7 +23,7 @@ function refreshData() {
                 actionable = true; // There is an action, so set flag to true
                 unchangedCount = 0; // Reset the count that checks if its finished
             } else {
-                console.log("GrammarlyAutofix: Dismissed item without any solution.");
+                console.log("GrammarlyAutofix: No solutions found.");
                 dismissButton.click();
                 actionable = false;
             }
