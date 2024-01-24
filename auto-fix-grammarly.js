@@ -7,19 +7,28 @@ function refreshData() {
 	console.log("Running refreshData function");
 	x = 1; 
 	try {
-		var newclass;
-		if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
-			newclass = document.querySelector('.cards-replacements_labels-itemRemove');
-		} else {
-			newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
-			newclass = newclass[0];
-		}
-
-		if (newclass) {
-			newclass.click();
-		} else {
-			console.log("newclass is undefined");
-		}
+	        var newclass;
+	        if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
+	            newclass = document.querySelector('.cards-replacements_labels-itemRemove');
+	        } else {
+	            // Click the button with aria-label="Dismiss" if '.cards-replacements_labels-itemRemove' is null
+	            var dismissButton = document.querySelector('button[aria-label="Dismiss"]');
+	            if (dismissButton) {
+	                dismissButton.click();
+	                console.log("Dismiss button clicked");
+	            } else {
+	                console.log("Dismiss button not found");
+	            }
+	
+	            newclass = document.getElementsByClassName("cards-replacements_labels-itemInsert");
+	            newclass = newclass[0];
+	        }
+	
+	        if (newclass) {
+	            newclass.click();
+	        } else {
+	            console.log("newclass is undefined");
+	        }
 
 		var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
 		if (updateAllButton) {
