@@ -42,16 +42,19 @@ function refreshData() {
             unchangedCount++;
             console.log("Unchanged Count: ", unchangedCount);
             if (unchangedCount >= 5) {
+                clearTimeout(refreshTimer); // Clear the timer first
+                if (observer) {
+                    observer.disconnect(); // Disconnect observer if it's being used
+                }
                 alert("No new errors to fix after 5 seconds, stopping script.");
-                clearTimeout(refreshTimer);
-                return; 
+                return; // Stop the function here
             }
         } else {
             unchangedCount = 0; 
             lastValue = currentValue; 
         }
-    
-        refreshTimer = setTimeout(refreshData, 5000);
+        
+        refreshTimer = setTimeout(refreshData, 5000); 
 
     } catch (error) {
         console.log("Error in refreshData: ", error);
