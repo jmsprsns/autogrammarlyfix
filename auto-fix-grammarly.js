@@ -23,16 +23,27 @@ function refreshData() {
                 actionable = true; // There is an action, so set flag to true
                 unchangedCount = 0; // Reset the count that checks if its finished
             } else {
-                if (dismissButton) {
-                    dismissButton.click();
-                    console.log("GrammarlyAutofix: No solutions found.");
-                }
-                else {
-                    console.log("GrammarlyAutofix: 0 errors detected, waiting...");
-                    actionable = false;
-                }
+                setTimeout(function() {
+                    itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
+                    if (itemRemove) {
+                        console.log("GrammarlyAutofix: Found after delay. Grammar mistake fixed!");
+                        itemRemove.click();
+                        actionable = true;
+                        unchangedCount = 0;
+                    } else {
+                        if (dismissButton) {
+                            dismissButton.click();
+                            console.log("GrammarlyAutofix: No solutions found.");
+                            actionable = true;
+                            unchangedCount = 0;
+                        } else {
+                            console.log("GrammarlyAutofix: 0 errors detected, waiting...");
+                            actionable = false;
+                        }
+                    }
+                }, 250);
             }
-    
+
             if (updateAllButton) {
                 console.log("Clicking updateAllButton");
                 updateAllButton.click();
@@ -55,13 +66,13 @@ function refreshData() {
                 unchangedCount = 0;
             }
             
-        }, 250); // Timeout
+        }, 150); // Timeout
         
     } catch (error) {
         console.log("Error in refreshData: ", error);
     }
 
-    refreshTimer = setTimeout(refreshData, 250);
+    refreshTimer = setTimeout(refreshData, 50);
 }
 
 
