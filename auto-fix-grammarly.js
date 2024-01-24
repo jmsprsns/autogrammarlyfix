@@ -23,9 +23,14 @@ function refreshData() {
                 actionable = true; // There is an action, so set flag to true
                 unchangedCount = 0; // Reset the count that checks if its finished
             } else {
-                console.log("GrammarlyAutofix: No solutions found.");
-                dismissButton.click();
-                actionable = false;
+                if (dismissButton) {
+                    dismissButton.click();
+                    console.log("GrammarlyAutofix: No solutions found.");
+                }
+                else {
+                    console.log("GrammarlyAutofix: 0 errors detected, waiting...");
+                    actionable = false;
+                }
             }
     
             if (updateAllButton) {
@@ -43,6 +48,7 @@ function refreshData() {
                         observer.disconnect();
                     }
                     alert("Success, zero errors! Stopping script.");
+                    console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
                     return;
                 }
             } else {
