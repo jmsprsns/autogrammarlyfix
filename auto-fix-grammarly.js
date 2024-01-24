@@ -30,12 +30,12 @@ function refreshData() {
         if (!actionable) {
             unchangedCount++;
             console.log("Unchanged Count: ", unchangedCount);
-            if (unchangedCount >= 5) {
+            if (unchangedCount >= 10) {
                 clearTimeout(refreshTimer);
                 if (observer) {
                     observer.disconnect();
                 }
-                alert("No new errors to fix after 5 checks, stopping script.");
+                alert("Success, zero errors! Stopping script.");
                 return;
             }
         } else {
