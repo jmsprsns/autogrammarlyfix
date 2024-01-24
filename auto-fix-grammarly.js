@@ -24,7 +24,11 @@ function refreshData() {
                 unchangedCount = 0; // Reset the count that checks if its finished
             } else {
                 setTimeout(function() {
-                    itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
+                    itemRemove = document.querySelector(
+                        '.cards-replacements_labels-itemRemove, ' + // Correctness
+                        '.cards-replacements_labels-deleteAll, ' + // Clarity
+                        '.cards-replacements_labels-itemInsert' // Engagement / Delivery
+                    );
                     if (itemRemove) {
                         console.log("GrammarlyAutofix: Found after delay. Grammar mistake fixed!");
                         itemRemove.click();
@@ -41,7 +45,7 @@ function refreshData() {
                             actionable = false;
                         }
                     }
-                }, 250);
+                }, 250); // Retry delay
             }
 
             if (updateAllButton) {
