@@ -20,7 +20,6 @@ function refreshData() {
             } else {
                 console.log("GrammarlyAutofix: Dismissed item without any solution.");
                 dismissButton.click();
-                actionable = true;
             }
     
             if (updateAllButton) {
