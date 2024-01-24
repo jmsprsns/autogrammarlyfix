@@ -7,23 +7,22 @@ function refreshData() {
 	console.log("Running refreshData function");
 	x = 1; 
 	try {
-		if (document.querySelector('.cards-replacements_labels-itemRemove') !== null) {
-			// Click the '.cards-replacements_labels-itemRemove' if it exists
-			var itemRemove = document.querySelector('.cards-replacements_labels-itemRemove');
-			itemRemove.click();
+		var newclass = document.querySelector('.cards-replacements_labels-itemRemove');
+		if (newclass) {
+			console.log("Clicking itemRemove");
+			newclass.click();
 		} else {
-			// Click the button with aria-label="Dismiss" if '.cards-replacements_labels-itemRemove' is null
-			var dismissButton = document.querySelector('button[aria-label="Dismiss"]');
+			console.log("itemRemove not found, looking for Dismiss button (card/ignore)");
+			var dismissButton = document.querySelector('button[data-name="card/ignore"]');
 			if (dismissButton) {
+				console.log("Dismiss button found, clicking");
 				dismissButton.click();
-				console.log("Dismiss button clicked");
 			} else {
-				console.log("Dismiss button not found");
-	
-				// Click the first '.cards-replacements_labels-itemInsert', if present
-				var itemInsert = document.querySelector(".cards-replacements_labels-itemInsert");
-				if (itemInsert) {
-					itemInsert.click();
+				console.log("Dismiss button not found, checking for itemInsert");
+				newclass = document.querySelector(".cards-replacements_labels-itemInsert");
+				if (newclass) {
+					console.log("Clicking itemInsert");
+					newclass.click();
 				} else {
 					console.log("itemInsert is undefined");
 				}
