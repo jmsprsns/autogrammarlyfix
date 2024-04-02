@@ -8,68 +8,65 @@ function refreshData() {
     if (active) {
         console.log("Running refreshData function");
         try {
-            // Updated to use XPath to find buttons with text "Accept" or "Rephrase"
-            var xpathForButtons = "//button[contains(@data-name, 'button:accept') and (contains(., 'Accept') or contains(., 'Rephrase'))]";
-            var buttons = document.evaluate(xpathForButtons, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-
-            var updateAllButton = document.querySelector('button[data-name="card/update-all"]');
-            var actionable = false; // Flag to check if there are actions to perform
-
+            // Use querySelectorAll to check if any button is missed
+            var buttons = document.querySelectorAll('button[data-name*="button:accept"]');
+            
+            var actionable = false;
+            
             setTimeout(function() {
                 if (!active) {
-                    return; // Check active status after delay
+                    console.log("Script is no longer active.");
+                    return;
                 }
                 
-                for (var i = 0; i < buttons.snapshotLength; i++) {
-                    var button = buttons.snapshotItem(i);
-                    if (button) {
-                        console.log("GrammarlyAutofix: Action button clicked.");
-                        button.click();
-                        actionable = true;
-                        unchangedCount = 0;
-                        break; // Exit after the first click to allow for re-evaluation
+                buttons.forEach(function(button) {
+                    // Additional check: Ensure button is not disabled
+                    if (button && !button.disabled) {
+                        var buttonText = button.innerText || button.textContent;
+                        if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
+                            console.log(`Clicking button: ${buttonText}`);
+                            button.click();
+                            actionable = true;
+                            unchangedCount = 0;
+                            return; // Exit loop after action
+                        }
                     }
-                }
-
-                if (!actionable) {
-                    console.log("GrammarlyAutofix: 0 errors detected, waiting...");
-                }
-
-                if (updateAllButton) {
-                    console.log("Clicking updateAllButton");
-                    updateAllButton.click();
-                    actionable = true;
-                }
+                });
 
                 if (!actionable) {
                     unchangedCount++;
-                    console.log("Unchanged Count: ", unchangedCount);
+                    console.log(`Unchanged Count: ${unchangedCount}. No actionable buttons found.`);
                     if (unchangedCount >= 10) {
-                        clearTimeout(refreshTimer);
-                        if (observer) {
-                            observer.disconnect();
-                        }
-                        active = false;
-                        alert("Success, zero errors! Stopping script.");
-                        console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
+                        wrapUp();
                         return;
                     }
                 } else {
                     unchangedCount = 0;
                 }
 
-            }, 150); // Timeout
+            }, 150); // Short delay to ensure page is ready
 
+            refreshTimer = setTimeout(refreshData, 50); // Schedule next check
         } catch (error) {
-            console.log("Error in refreshData: ", error);
+            console.error("Error in refreshData: ", error);
         }
-
-        refreshTimer = setTimeout(refreshData, 50);
-    }
-    else {
-        return;
+    } else {
+        console.log("Refresh data function called while script is inactive.");
     }
 }
+
+function wrapUp() {
+    clearTimeout(refreshTimer);
+    if (observer) observer.disconnect();
+    active = false;
+    alert("Success, zero errors! Stopping script.");
+    console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
+}
+
+// Initial call for testing purposes
+console.log("Initializing script...");
+refreshData();
+
 
 
 
