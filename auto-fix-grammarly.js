@@ -1,6 +1,25 @@
 var active = true; // Control flag to start or stop the script
 
-// Function to dispatch mouse events
+function simulateClicks() {
+    setInterval(() => {
+        // Simulate mouse cursor movement to the top-most item position
+        dispatchMouseEvent('mousemove', 1000, 180);
+        dispatchMouseEvent('mousedown', 1000, 180);
+        dispatchMouseEvent('mouseup', 1000, 180);
+        dispatchMouseEvent('click', 1000, 180);
+
+        // Wait half a second before simulating the button click to allow for visual distinction
+        setTimeout(() => {
+            // Simulate mouse cursor movement to the button position
+            dispatchMouseEvent('mousemove', 1000, 300);
+            dispatchMouseEvent('mousedown', 1000, 300);
+            dispatchMouseEvent('mouseup', 1000, 300);
+            dispatchMouseEvent('click', 1000, 300);
+        }, 500); // This delay is within the 1-second interval of the whole process
+    }, 1000); // Repeat this process every second
+}
+
+// Helper function to dispatch mouse events
 function dispatchMouseEvent(eventType, clientX, clientY) {
     const event = new MouseEvent(eventType, {
         bubbles: true,
@@ -12,46 +31,9 @@ function dispatchMouseEvent(eventType, clientX, clientY) {
     document.dispatchEvent(event);
 }
 
-// Simulate clicks based on absolute positions from the left of the screen and from the top
-function simulateClicks() {
-    if (!active) {
-        console.log("Script is no longer active.");
-        return;
-    }
-
-    // Position for the button click
-    console.log("Simulating button click at 1000px left and 300px top");
-    simulateClick(1000, 300);
-
-    // Wait a moment before simulating the click for the top-most item
-    setTimeout(() => {
-        console.log("Simulating top-most item click at 1000px left and 180px top");
-        simulateClick(1000, 180);
-    }, 150); // This delay allows for any necessary UI updates between clicks
-}
-
-// Helper function to perform the click action at specified coordinates
-function simulateClick(x, y) {
-    dispatchMouseEvent('mousemove', x, y);
-    dispatchMouseEvent('mousedown', x, y);
-    dispatchMouseEvent('mouseup', x, y);
-    dispatchMouseEvent('click', x, y);
-}
-
 function startScript() {
     console.log("Initializing script...");
     simulateClicks();
-
-    // If you want to continuously perform these clicks at intervals
-    // refreshTimer = setTimeout(startScript, 2000); // Adjust the timing as necessary
 }
 
 startScript();
-
-// Function to wrap up and stop the script, including cleanup of any intervals or observers
-function wrapUp() {
-    if (refreshTimer) clearTimeout(refreshTimer);
-    if (observer) observer.disconnect();
-    active = false;
-    console.log("Stopping script. Success or completion condition met.");
-}
