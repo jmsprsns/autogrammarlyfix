@@ -20,11 +20,12 @@ function refreshData() {
                 }
 
                 for (let button of allButtons) {
-                    var buttonText = button.innerText || button.textContent;
-                    // Check if the button's text includes "Accept" or "Rephrase"
-                    if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
-                        console.log(`Clicking the first button: ${buttonText}`);
-                        button.click();
+                    var span = button.querySelector('span'); // Find the first span inside the button
+                    var spanText = span ? span.innerText || span.textContent : "";
+                    // Check if the span's text includes "Accept" or "Rephrase"
+                    if (spanText.includes("Accept") || spanText.includes("Rephrase")) {
+                        console.log(`Clicking the first span: ${spanText}`);
+                        span.click(); // Click the span instead of the button
                         foundAndClicked = true;
                         unchangedCount = 0;
                         break; // Stop after the first match is found and acted upon
@@ -33,7 +34,7 @@ function refreshData() {
 
                 if (!foundAndClicked) {
                     unchangedCount++;
-                    console.log(`Unchanged Count: ${unchangedCount}. No matching buttons found.`);
+                    console.log(`Unchanged Count: ${unchangedCount}. No matching spans found.`);
                     if (unchangedCount >= 10) {
                         wrapUp();
                         return;
