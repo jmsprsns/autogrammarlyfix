@@ -8,28 +8,26 @@ function refreshData() {
     if (active) {
         console.log("Running refreshData function");
         try {
-            // Use querySelectorAll to check if any button is missed
-            var buttons = document.querySelectorAll('button[data-name*="button:accept"]');
-            
+            // Select all buttons that could potentially be "Accept" or "Rephrase" based on the data-name attribute
+            var allButtons = document.querySelectorAll('button[data-name="button:accept"]');
+
             var actionable = false;
-            
+
             setTimeout(function() {
                 if (!active) {
                     console.log("Script is no longer active.");
                     return;
                 }
-                
-                buttons.forEach(function(button) {
-                    // Additional check: Ensure button is not disabled
-                    if (button && !button.disabled) {
-                        var buttonText = button.innerText || button.textContent;
-                        if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
-                            console.log(`Clicking button: ${buttonText}`);
-                            button.click();
-                            actionable = true;
-                            unchangedCount = 0;
-                            return; // Exit loop after action
-                        }
+
+                allButtons.forEach(function(button) {
+                    var buttonText = button.innerText || button.textContent;
+                    // Check if the button's text is exactly "Accept" or "Rephrase"
+                    if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
+                        console.log(`Clicking button: ${buttonText}`);
+                        button.click();
+                        actionable = true;
+                        unchangedCount = 0;
+                        // Consider breaking here if only one button click per interval is desired
                     }
                 });
 
@@ -46,7 +44,7 @@ function refreshData() {
 
             }, 150); // Short delay to ensure page is ready
 
-            refreshTimer = setTimeout(refreshData, 50); // Schedule next check
+            refreshTimer = setTimeout(refreshData, 500); // Adjusted timing for recheck
         } catch (error) {
             console.error("Error in refreshData: ", error);
         }
@@ -66,6 +64,7 @@ function wrapUp() {
 // Initial call for testing purposes
 console.log("Initializing script...");
 refreshData();
+
 
 
 
