@@ -12,8 +12,8 @@ function simulateClicks() {
         setTimeout(() => {
             // Simulate mouse cursor movement to the button position
             dispatchMouseEvent('mousemove', 1000, 300);
-            dispatchMouseEvent('mousedown', 1000, 300);
-            dispatchMouseEvent('mouseup', 1000, 300);
+            dispatchMouseEvent('mousedown', 1060, 300);
+            dispatchMouseEvent('mouseup', 1060, 300);
             dispatchMouseEvent('click', 1000, 300);
         }, 500); // This delay is within the 1-second interval of the whole process
     }, 1000); // Repeat this process every second
