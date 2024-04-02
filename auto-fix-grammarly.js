@@ -27,21 +27,25 @@ function refreshData() {
     }
 
     const sidebarRect = sidebar.getBoundingClientRect();
-    // Simulate click on the button
-    simulateClick(sidebarRect.left + 64, sidebarRect.top + 334);
-    // Simulate click on the top-most item after a delay
-    setTimeout(() => simulateClick(sidebarRect.left + 92, sidebarRect.top + 238), 100);
+    // Ensure clicks are within the viewport
+    simulateClick(Math.max(0, sidebarRect.left + 64), Math.max(0, sidebarRect.top + 334));
+    setTimeout(() => simulateClick(Math.max(0, sidebarRect.left + 92), Math.max(0, sidebarRect.top + 238)), 100);
 }
 
+
 function simulateClick(x, y) {
+    // Adjusting by window's scroll offsets
+    x += window.scrollX;
+    y += window.scrollY;
+
     const options = { clientX: x, clientY: y, screenX: x, screenY: y };
-    // Target is the document since actual elements are not directly interacted with
     dispatchMouseEvent(document, 'mousemove', options);
     dispatchMouseEvent(document, 'mousedown', options);
     dispatchMouseEvent(document, 'mouseup', options);
     dispatchMouseEvent(document, 'click', options);
     console.log(`Simulated click at (${x}, ${y})`);
 }
+
 
 function wrapUp() {
     clearTimeout(refreshTimer);
