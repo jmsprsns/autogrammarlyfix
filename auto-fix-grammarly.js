@@ -8,10 +8,10 @@ function refreshData() {
     if (active) {
         console.log("Running refreshData function");
         try {
-            // Select all buttons that could potentially be "Accept" or "Rephrase" based on the data-name attribute
+            // Select all buttons that could potentially be "Accept" or "Rephrase" based on their common attribute
             var allButtons = document.querySelectorAll('button[data-name="button:accept"]');
 
-            var actionable = false;
+            var foundAndClicked = false; // Flag to indicate if an action has been taken
 
             setTimeout(function() {
                 if (!active) {
@@ -19,21 +19,21 @@ function refreshData() {
                     return;
                 }
 
-                allButtons.forEach(function(button) {
+                for (let button of allButtons) {
                     var buttonText = button.innerText || button.textContent;
-                    // Check if the button's text is exactly "Accept" or "Rephrase"
+                    // Check if the button's text includes "Accept" or "Rephrase"
                     if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
-                        console.log(`Clicking button: ${buttonText}`);
+                        console.log(`Clicking the first button: ${buttonText}`);
                         button.click();
-                        actionable = true;
+                        foundAndClicked = true;
                         unchangedCount = 0;
-                        // Consider breaking here if only one button click per interval is desired
+                        break; // Stop after the first match is found and acted upon
                     }
-                });
+                }
 
-                if (!actionable) {
+                if (!foundAndClicked) {
                     unchangedCount++;
-                    console.log(`Unchanged Count: ${unchangedCount}. No actionable buttons found.`);
+                    console.log(`Unchanged Count: ${unchangedCount}. No matching buttons found.`);
                     if (unchangedCount >= 10) {
                         wrapUp();
                         return;
@@ -42,7 +42,7 @@ function refreshData() {
                     unchangedCount = 0;
                 }
 
-            }, 150); // Short delay to ensure page is ready
+            }, 150); // Short delay to ensure page readiness
 
             refreshTimer = setTimeout(refreshData, 500); // Adjusted timing for recheck
         } catch (error) {
@@ -52,6 +52,7 @@ function refreshData() {
         console.log("Refresh data function called while script is inactive.");
     }
 }
+
 
 function wrapUp() {
     clearTimeout(refreshTimer);
