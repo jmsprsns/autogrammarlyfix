@@ -57,16 +57,34 @@ function refreshData() {
         console.log("Refresh data function called while script is inactive.");
     }
 }
-
 function dispatchClickEvent(element) {
-    console.log(`Clicking on element: ${element.className}`);
-    var evt = new MouseEvent("click", {
+    console.log(`Simulating realistic click on element: ${element.className}`);
+    
+    // Create and dispatch a mousedown event
+    var mouseDownEvent = new MouseEvent("mousedown", {
         bubbles: true,
         cancelable: true,
         view: window
     });
-    element.dispatchEvent(evt);
+    element.dispatchEvent(mouseDownEvent);
+
+    // Create and dispatch a mouseup event
+    var mouseUpEvent = new MouseEvent("mouseup", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+    });
+    element.dispatchEvent(mouseUpEvent);
+
+    // Create and dispatch a click event
+    var clickEvent = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+    });
+    element.dispatchEvent(clickEvent);
 }
+
 
 
 
