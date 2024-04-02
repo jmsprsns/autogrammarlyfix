@@ -2,18 +2,19 @@ var refreshTimer;
 var observer;
 var active = true; // Control flag to start or stop the script
 
-// Utility function to dispatch mouse events
-function dispatchMouseEvent(target, eventType, options = {}) {
+// Function to dispatch mouse events
+function dispatchMouseEvent(target, eventType, clientX, clientY) {
     const event = new MouseEvent(eventType, {
         bubbles: true,
         cancelable: true,
         view: window,
-        ...options
+        clientX: clientX,
+        clientY: clientY
     });
     target.dispatchEvent(event);
 }
 
-// Function to perform simulated mouse movements and clicks within the sidebar
+// Primary function to handle the dynamic content and click actions
 function refreshData() {
     if (!active) {
         console.log("Script is no longer active.");
@@ -27,25 +28,24 @@ function refreshData() {
     }
 
     const sidebarRect = sidebar.getBoundingClientRect();
-    // Ensure clicks are within the viewport
-    simulateClick(Math.max(0, sidebarRect.left + 64), Math.max(0, sidebarRect.top + 334));
-    setTimeout(() => simulateClick(Math.max(0, sidebarRect.left + 92), Math.max(0, sidebarRect.top + 238)), 100);
+    const baseX = window.scrollX + sidebarRect.left;
+    const baseY = window.scrollY + sidebarRect.top;
+
+    // First click position inside the sidebar
+    performClicks(baseX + 64, baseY + 334);
+
+    // Second click position for the top-most item, after a delay
+    setTimeout(() => performClicks(baseX + 92, baseY + 238), 150);
 }
 
-
-function simulateClick(x, y) {
-    // Adjusting by window's scroll offsets
-    x += window.scrollX;
-    y += window.scrollY;
-
-    const options = { clientX: x, clientY: y, screenX: x, screenY: y };
-    dispatchMouseEvent(document, 'mousemove', options);
-    dispatchMouseEvent(document, 'mousedown', options);
-    dispatchMouseEvent(document, 'mouseup', options);
-    dispatchMouseEvent(document, 'click', options);
+// Helper function to simulate the clicks at specified coordinates
+function performClicks(x, y) {
     console.log(`Simulated click at (${x}, ${y})`);
+    dispatchMouseEvent(document.documentElement, 'mousemove', x, y);
+    dispatchMouseEvent(document.documentElement, 'mousedown', x, y);
+    dispatchMouseEvent(document.documentElement, 'mouseup', x, y);
+    dispatchMouseEvent(document.documentElement, 'click', x, y);
 }
-
 
 function wrapUp() {
     clearTimeout(refreshTimer);
