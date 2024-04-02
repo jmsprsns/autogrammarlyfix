@@ -10,43 +10,42 @@ function refreshData() {
         try {
             var allButtons = document.querySelectorAll('button[data-name="button:accept"]');
 
-            var foundAndClicked = false;
-
             setTimeout(function() {
                 if (!active) {
                     console.log("Script is no longer active.");
                     return;
                 }
 
-                for (let button of allButtons) {
-                    var buttonText = button.innerText || button.textContent;
-                    if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
-                        console.log(`Attempting to click the first matching button: ${buttonText}`);
-                        
-                        // Directly dispatch click event to the button
-                        var evt = new MouseEvent("click", {
-                            bubbles: true,
-                            cancelable: true,
-                            view: window
-                        });
-                        button.dispatchEvent(evt);
+                allButtons.forEach(function(button) {
+                    // Directly dispatch click event to the button
+                    dispatchClickEvent(button);
 
-                        foundAndClicked = true;
-                        unchangedCount = 0;
-                        break; // Stop after the first match is found and acted upon
-                    }
-                }
+                    // Dispatch click event to the div inside the button
+                    var div = button.querySelector('div');
+                    if (div) {
+                        dispatchClickEvent(div);
 
-                if (!foundAndClicked) {
-                    unchangedCount++;
-                    console.log(`Unchanged Count: ${unchangedCount}. No matching buttons found.`);
-                    if (unchangedCount >= 10) {
-                        wrapUp();
-                        return;
+                        // Dispatch click event to the first span inside the div
+                        var spanInDiv = div.querySelector('span');
+                        if (spanInDiv) {
+                            dispatchClickEvent(spanInDiv);
+                        }
                     }
-                } else {
-                    unchangedCount = 0;
-                }
+
+                    // Dispatch click event to the span containing "rippleContainer"
+                    var rippleContainerSpan = button.querySelector('.rippleContainer_f1o3m0cx');
+                    if (rippleContainerSpan) {
+                        dispatchClickEvent(rippleContainerSpan);
+
+                        // Dispatch click event to the span inside the "rippleContainer"
+                        var spanInRippleContainer = rippleContainerSpan.querySelector('span');
+                        if (spanInRippleContainer) {
+                            dispatchClickEvent(spanInRippleContainer);
+                        }
+                    }
+                });
+
+                unchangedCount = 0;
 
             }, 150); // Short delay to ensure page readiness
 
@@ -58,6 +57,19 @@ function refreshData() {
         console.log("Refresh data function called while script is inactive.");
     }
 }
+
+function dispatchClickEvent(element) {
+    console.log(`Clicking on element: ${element.className}`);
+    var evt = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+    });
+    element.dispatchEvent(evt);
+}
+
+
+
 
 
 
@@ -72,10 +84,6 @@ function wrapUp() {
 // Initial call for testing purposes
 console.log("Initializing script...");
 refreshData();
-
-
-
-
 
 function checkForChanges() {
 	console.log("Running checkForChanges function");
