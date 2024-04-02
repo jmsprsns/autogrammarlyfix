@@ -1,9 +1,7 @@
-var refreshTimer;
-var observer;
 var active = true; // Control flag to start or stop the script
 
 // Function to dispatch mouse events
-function dispatchMouseEvent(target, eventType, clientX, clientY) {
+function dispatchMouseEvent(eventType, clientX, clientY) {
     const event = new MouseEvent(eventType, {
         bubbles: true,
         cancelable: true,
@@ -11,75 +9,49 @@ function dispatchMouseEvent(target, eventType, clientX, clientY) {
         clientX: clientX,
         clientY: clientY
     });
-    target.dispatchEvent(event);
+    document.dispatchEvent(event);
 }
 
-// Primary function to handle the dynamic content and click actions
-function refreshData() {
+// Simulate clicks based on absolute positions from the left of the screen and from the top
+function simulateClicks() {
     if (!active) {
         console.log("Script is no longer active.");
         return;
     }
 
-    const sidebar = document.querySelector('aside[data-name="sidebar-tier"]');
-    if (!sidebar) {
-        console.log("Sidebar container not found.");
-        return;
-    }
+    // Position for the button click
+    console.log("Simulating button click at 1000px left and 300px top");
+    simulateClick(1000, 300);
 
-    const sidebarRect = sidebar.getBoundingClientRect();
-    const baseX = window.scrollX + sidebarRect.left;
-    const baseY = window.scrollY + sidebarRect.top;
-
-    // First click position inside the sidebar
-    performClicks(baseX + 64, baseY + 334);
-
-    // Second click position for the top-most item, after a delay
-    setTimeout(() => performClicks(baseX + 92, baseY + 238), 150);
+    // Wait a moment before simulating the click for the top-most item
+    setTimeout(() => {
+        console.log("Simulating top-most item click at 1000px left and 180px top");
+        simulateClick(1000, 180);
+    }, 150); // This delay allows for any necessary UI updates between clicks
 }
 
-// Helper function to simulate the clicks at specified coordinates
-function performClicks(x, y) {
-    console.log(`Simulated click at (${x}, ${y})`);
-    dispatchMouseEvent(document.documentElement, 'mousemove', x, y);
-    dispatchMouseEvent(document.documentElement, 'mousedown', x, y);
-    dispatchMouseEvent(document.documentElement, 'mouseup', x, y);
-    dispatchMouseEvent(document.documentElement, 'click', x, y);
+// Helper function to perform the click action at specified coordinates
+function simulateClick(x, y) {
+    dispatchMouseEvent('mousemove', x, y);
+    dispatchMouseEvent('mousedown', x, y);
+    dispatchMouseEvent('mouseup', x, y);
+    dispatchMouseEvent('click', x, y);
 }
 
+function startScript() {
+    console.log("Initializing script...");
+    simulateClicks();
+
+    // If you want to continuously perform these clicks at intervals
+    // refreshTimer = setTimeout(startScript, 2000); // Adjust the timing as necessary
+}
+
+startScript();
+
+// Function to wrap up and stop the script, including cleanup of any intervals or observers
 function wrapUp() {
-    clearTimeout(refreshTimer);
+    if (refreshTimer) clearTimeout(refreshTimer);
     if (observer) observer.disconnect();
     active = false;
-    alert("Success, zero errors! Stopping script.");
-    console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
+    console.log("Stopping script. Success or completion condition met.");
 }
-
-function checkForChanges() {
-    console.log("Running checkForChanges function");
-    refreshData(); // Call refreshData to handle dynamic content
-}
-
-function startObserving() {
-    console.log("Starting to observe");
-    var targetNode = document.querySelector('.counterText'); // Adjust if a different parent element is more appropriate
-
-    if (!targetNode) {
-        console.log("Target node not found");
-        return;
-    }
-
-    var config = { childList: true, subtree: true };
-
-    observer = new MutationObserver(function(mutations) {
-        console.log("Mutation observed");
-        checkForChanges();
-    });
-
-    observer.observe(targetNode, config);
-}
-
-// Start the process
-console.log("Initializing script...");
-refreshData();
-startObserving();
