@@ -19,28 +19,27 @@ function refreshData() {
                 }
 
                 for (let button of allButtons) {
-                    var span = button.querySelector('span');
-                    var spanText = span ? span.innerText || span.textContent : "";
-                    if (spanText.includes("Accept") || spanText.includes("Rephrase")) {
-                        console.log(`Attempting to click the first span: ${spanText}`);
+                    var buttonText = button.innerText || button.textContent;
+                    if (buttonText.includes("Accept") || buttonText.includes("Rephrase")) {
+                        console.log(`Attempting to click the first matching button: ${buttonText}`);
                         
-                        // Create a mouse event and dispatch it to simulate a click
+                        // Directly dispatch click event to the button
                         var evt = new MouseEvent("click", {
                             bubbles: true,
                             cancelable: true,
                             view: window
                         });
-                        span.dispatchEvent(evt);
+                        button.dispatchEvent(evt);
 
                         foundAndClicked = true;
                         unchangedCount = 0;
-                        break;
+                        break; // Stop after the first match is found and acted upon
                     }
                 }
 
                 if (!foundAndClicked) {
                     unchangedCount++;
-                    console.log(`Unchanged Count: ${unchangedCount}. No matching spans found.`);
+                    console.log(`Unchanged Count: ${unchangedCount}. No matching buttons found.`);
                     if (unchangedCount >= 10) {
                         wrapUp();
                         return;
@@ -49,9 +48,9 @@ function refreshData() {
                     unchangedCount = 0;
                 }
 
-            }, 150);
+            }, 150); // Short delay to ensure page readiness
 
-            refreshTimer = setTimeout(refreshData, 500);
+            refreshTimer = setTimeout(refreshData, 500); // Adjusted timing for recheck
         } catch (error) {
             console.error("Error in refreshData: ", error);
         }
