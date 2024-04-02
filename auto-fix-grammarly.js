@@ -1,95 +1,47 @@
 var refreshTimer;
-var lastValue = null;
-var unchangedCount = 0;
 var observer;
-var active = true;
+var active = true; // Control flag to start or stop the script
 
+// Utility function to dispatch mouse events
+function dispatchMouseEvent(target, eventType, options = {}) {
+    const event = new MouseEvent(eventType, {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        ...options
+    });
+    target.dispatchEvent(event);
+}
+
+// Function to perform simulated mouse movements and clicks within the sidebar
 function refreshData() {
-    if (active) {
-        console.log("Running refreshData function");
-        try {
-            var allButtons = document.querySelectorAll('button[data-name="button:accept"]');
-
-            setTimeout(function() {
-                if (!active) {
-                    console.log("Script is no longer active.");
-                    return;
-                }
-
-                allButtons.forEach(function(button) {
-                    // Directly dispatch click event to the button
-                    dispatchClickEvent(button);
-
-                    // Dispatch click event to the div inside the button
-                    var div = button.querySelector('div');
-                    if (div) {
-                        dispatchClickEvent(div);
-
-                        // Dispatch click event to the first span inside the div
-                        var spanInDiv = div.querySelector('span');
-                        if (spanInDiv) {
-                            dispatchClickEvent(spanInDiv);
-                        }
-                    }
-
-                    // Dispatch click event to the span containing "rippleContainer"
-                    var rippleContainerSpan = button.querySelector('.rippleContainer_f1o3m0cx');
-                    if (rippleContainerSpan) {
-                        dispatchClickEvent(rippleContainerSpan);
-
-                        // Dispatch click event to the span inside the "rippleContainer"
-                        var spanInRippleContainer = rippleContainerSpan.querySelector('span');
-                        if (spanInRippleContainer) {
-                            dispatchClickEvent(spanInRippleContainer);
-                        }
-                    }
-                });
-
-                unchangedCount = 0;
-
-            }, 150); // Short delay to ensure page readiness
-
-            refreshTimer = setTimeout(refreshData, 500); // Adjusted timing for recheck
-        } catch (error) {
-            console.error("Error in refreshData: ", error);
-        }
-    } else {
-        console.log("Refresh data function called while script is inactive.");
+    if (!active) {
+        console.log("Script is no longer active.");
+        return;
     }
-}
-function dispatchClickEvent(element) {
-    console.log(`Simulating realistic click on element: ${element.className}`);
-    
-    // Create and dispatch a mousedown event
-    var mouseDownEvent = new MouseEvent("mousedown", {
-        bubbles: true,
-        cancelable: true,
-        view: window
-    });
-    element.dispatchEvent(mouseDownEvent);
 
-    // Create and dispatch a mouseup event
-    var mouseUpEvent = new MouseEvent("mouseup", {
-        bubbles: true,
-        cancelable: true,
-        view: window
-    });
-    element.dispatchEvent(mouseUpEvent);
+    const sidebar = document.querySelector('aside[data-name="sidebar-tier"]');
+    if (!sidebar) {
+        console.log("Sidebar container not found.");
+        return;
+    }
 
-    // Create and dispatch a click event
-    var clickEvent = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window
-    });
-    element.dispatchEvent(clickEvent);
+    const sidebarRect = sidebar.getBoundingClientRect();
+    // Simulate click on the button
+    simulateClick(sidebarRect.left + 64, sidebarRect.top + 334);
+    // Simulate click on the top-most item after a delay
+    setTimeout(() => simulateClick(sidebarRect.left + 92, sidebarRect.top + 238), 100);
 }
 
-
-
-
-
-
+function simulateClick(x, y) {
+    const options = { clientX: x, clientY: y, screenX: x, screenY: y };
+    // Target is the document since actual elements are not directly interacted with
+    dispatchMouseEvent(document, 'mousemove', options);
+    dispatchMouseEvent(document, 'mousedown', options);
+    dispatchMouseEvent(document, 'mouseup', options);
+    dispatchMouseEvent(document, 'click', options);
+    console.log(`Simulated click at (${x}, ${y})`);
+}
 
 function wrapUp() {
     clearTimeout(refreshTimer);
@@ -99,35 +51,31 @@ function wrapUp() {
     console.log("GrammarlyAutofix: Success, zero errors! Stopping script.");
 }
 
-// Initial call for testing purposes
-console.log("Initializing script...");
-refreshData();
-
 function checkForChanges() {
-	console.log("Running checkForChanges function");
-	refreshData(); // Call refreshData to handle dynamic content
+    console.log("Running checkForChanges function");
+    refreshData(); // Call refreshData to handle dynamic content
 }
 
 function startObserving() {
-	console.log("Starting to observe");
-	var targetNode = document.querySelector('.counterText'); // Adjust if a different parent element is more appropriate
+    console.log("Starting to observe");
+    var targetNode = document.querySelector('.counterText'); // Adjust if a different parent element is more appropriate
 
-	if (!targetNode) {
-		console.log("Target node not found");
-		return;
-	}
+    if (!targetNode) {
+        console.log("Target node not found");
+        return;
+    }
 
-	var config = { childList: true, subtree: true };
+    var config = { childList: true, subtree: true };
 
-	observer = new MutationObserver(function(mutations) {
-		console.log("Mutation observed");
-		checkForChanges();
-	});
+    observer = new MutationObserver(function(mutations) {
+        console.log("Mutation observed");
+        checkForChanges();
+    });
 
-	observer.observe(targetNode, config);
+    observer.observe(targetNode, config);
 }
 
 // Start the process
-console.log("Starting the process");
+console.log("Initializing script...");
 refreshData();
 startObserving();
