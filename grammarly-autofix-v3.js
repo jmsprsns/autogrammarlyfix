@@ -1,6 +1,7 @@
 var refreshTimer;
 var refreshInterval = 2000;
-var autoFixes = ['Correctness', 'Clarity', 'Engagement', 'Delivery']
+// var autoFixes = ['Correctness', 'Clarity', 'Engagement', 'Delivery']
+var autoFixes = ['Correctness']
 var lastValue = null;
 var unchangedCount = 0;
 var observer;
